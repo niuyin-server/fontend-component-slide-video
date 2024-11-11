@@ -164,8 +164,9 @@ onMounted(() => {
   height: 100%;
   width: 100%;
   position: relative;
-  background-color: #3e3a3a;
+  background-color: #000000;
   z-index: 1;
+  overflow: hidden;
 
   &--video {
     width: 100%;
@@ -191,7 +192,7 @@ onMounted(() => {
     z-index: -1;
     transform: translate(-50%, -50%);
     transition: all .2s;
-    filter: blur(1rem);
+    filter: blur(5rem);
   }
 
   &--play {

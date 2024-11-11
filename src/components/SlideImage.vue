@@ -4,6 +4,7 @@
 
 <template>
   SlideImage.vue
+<!--  todo slide image-->
 </template>
 
 <style scoped>

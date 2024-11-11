@@ -1,4 +1,7 @@
 <script setup>
+import Video from '@/components/Video.vue';
+import SlideImage from "@/components/SlideImage.vue";
+
 const props = defineProps({
   item: {
     type: Object,
@@ -23,7 +26,14 @@ const props = defineProps({
 </script>
 
 <template>
-
+  <Video v-if="publishType==='0'"
+         :src="item.videoUrl"
+         :poster="item.coverImage"
+         :index="index"
+         :activeIndex="activeIndex"
+         autoplay>
+  </Video>
+  <SlideImage v-else-if="publishType==='1'"/>
 </template>
 
 <style scoped>

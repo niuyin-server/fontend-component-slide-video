@@ -36,10 +36,12 @@ const transitionStart = (swiper) => {
   if (activeIndex.value === swiper.activeIndex) {
     // 如果是第一个轮播图且方向为上一个
     if (swiper.swipeDirection === "prev" && swiper.activeIndex === 0) {
+      console.log('refresh')
       emits("refresh");
     }
     // 如果是最后一个轮播图且方向为下一个
     else if (swiper.swipeDirection === "next" && swiper.activeIndex === listLength - 1) {
+      console.log('toBottom')
       emits("toBottom");
     }
   } else {
@@ -47,6 +49,7 @@ const transitionStart = (swiper) => {
     activeIndex.value = swiper.activeIndex;
     // 如果是最后一个轮播图，预加载数据
     if (swiper.activeIndex === listLength - 1) {
+      console.log('load')
       emits("load");
     }
   }

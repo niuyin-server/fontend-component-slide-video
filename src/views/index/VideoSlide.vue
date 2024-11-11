@@ -1,8 +1,9 @@
 <script setup>
-import {ref, onMounted} from 'vue';
+import {onMounted, ref} from 'vue';
 import Slide from '@/components/Slide.vue';
-import Video from '@/components/Video.vue';
 import {recommendVideoFeed} from "@/api/recommend.js";
+import SlideChoose from "@/components/SlideChoose.vue";
+import Behave from "@/components/Behave.vue";
 
 const videoList = ref([])
 
@@ -27,22 +28,6 @@ function load() {
   loadVideo()
 }
 
-function fabulous() {
-  console.log("这是点赞");
-}
-
-function comment() {
-  console.log("这是评论");
-}
-
-function collection() {
-  console.log("这是收藏");
-}
-
-function share() {
-  console.log("这是分享");
-}
-
 onMounted(() => {
   loadVideo()
 })
@@ -56,13 +41,11 @@ onMounted(() => {
         @refresh="refresh"
         @toBottom="toBottom"
         @load="load">
-      <Video
-          :src="item.videoUrl"
-          :poster="item.coverImage"
-          :index="index"
-          :activeIndex="activeIndex"
-          autoplay>
-      </Video>
+      <SlideChoose :item="item"
+                   :index="index"
+                   :activeIndex="activeIndex"
+                   :publish-type="item.publishType"/>
+      <Behave/>
     </Slide>
   </div>
 </template>

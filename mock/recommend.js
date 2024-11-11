@@ -13,7 +13,7 @@ export default [{
                 viewNum: 48,
                 likeNum: 0,
                 favoritesNum: 0,
-                publishType: "0",
+                publishType: "1",
                 showType: "0",
                 positionFlag: "0",
                 auditsStatus: "0",
