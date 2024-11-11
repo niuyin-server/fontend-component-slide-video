@@ -81,25 +81,25 @@ const props = defineProps({
 });
 
 // 是否是暂停状态
-const paused = ref(true);
+const paused = ref(true)
 // 视频总时间
-const endTime = ref(second(0));
+const endTime = ref(second(0))
 // 播放的时间
-const startTime = ref(second(0));
+const startTime = ref(second(0))
 // 是否是按下状态
-const isPress = ref(false);
+const isPress = ref(true)
 // 缓冲进度
-const percentageBuffer = ref(0);
+const percentageBuffer = ref(0)
 // 播放进度
-const percentage = ref(0);
+const percentage = ref(0)
 // 保存计算后的播放时间
-const calculationTime = ref(0);
+const calculationTime = ref(0)
 // 拿到video 实例
-const video = ref(null);
+const video = ref(null)
 // 是否展示封面图
-const showImg = ref(true);
+const showImg = ref(true)
 // 是否处于缓冲中
-const loading = ref(false);
+const loading = ref(false)
 // 进度条
 const progressRef = ref(null)
 
@@ -175,12 +175,13 @@ function touchstart() {
 
 // 松开按钮触发
 function touchend() {
-  isPress.value = false;
   video.value.currentTime = calculationTime.value;
+  isPress.value = false;
 }
 
 // 拖动的时候触发
 function touchmove(e) {
+  console.log('移动触发')
   const width = progressRef.value.offsetWidth;
   let tx = e.layerX;
   if (tx < 0 || tx > width) {
@@ -195,6 +196,8 @@ function touchmove(e) {
 
 // 点击进度条触发
 function handleProgress(e) {
+  isPress.value = true;
+  console.log('点击进度' + isPress.value)
   touchmove(e);
   touchend();
 }
@@ -284,7 +287,7 @@ onMounted(() => {
 
     &:hover {
       .progress {
-        height: 8px;
+        height: 8px !important;
 
         &-buffer {
           height: 8px;
@@ -306,7 +309,8 @@ onMounted(() => {
       left: 50%;
       bottom: 32px;
       transform: translateX(-50%);
-      color: rgba(255, 255, 255, 1);
+      color: rgba(255, 255, 255, .8);
+      transition: height 1s;
 
       .start {
         font-size: 12px;
