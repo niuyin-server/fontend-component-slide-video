@@ -13,6 +13,28 @@ const swiperDirection = ref('vertical')
 //   }
 //   console.log(platformList.value)
 // }
+
+const transitionStart = (swiper) => {
+  //表示没有滑动,不做处理
+  if (activeIndex.value === swiper.activeIndex) {
+    // 表示是第一个轮播图
+    if (swiper.swipeDirection === "prev" && swiper.activeIndex === 0) {
+      emit("refresh");
+    } else if (
+        swiper.swipeDirection === "next" &&
+        swiper.activeIndex === list.length - 1
+    ) {
+      emit("toBottom");
+    }
+  } else {
+    activeIndex.value = swiper.activeIndex;
+    // 为了预加载视频，提前load 数据
+    if (swiper.activeIndex === list.length - 1) {
+      emit("load");
+    }
+  }
+}
+const activeIndex = ref(0)
 const onSwiper = (swiper) => {
   console.log(swiper);
 };
@@ -31,7 +53,7 @@ onMounted(() => {
     <swiper
         class="h-full relative"
         :slides-per-view="1"
-        :space-between="50"
+        :space-between="20"
         :mousewheel="true"
         :direction="swiperDirection"
         :scrollbar="{ draggable: true }"

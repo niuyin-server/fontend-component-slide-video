@@ -8,7 +8,7 @@ const routes = [
         component: Index,
         children: [
             {
-                path: "/", name: "index", component: () => import("@/views/index/Index.vue"), meta: {
+                path: "/", name: "index", component: () => import("@/views/index/VideoSlide.vue"), meta: {
                     keepAlive: true
                 }
             },
