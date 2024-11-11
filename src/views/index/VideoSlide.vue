@@ -55,23 +55,13 @@ onMounted(() => {
         v-slot="{ item, index, activeIndex }"
         @refresh="refresh"
         @toBottom="toBottom"
-        @load="load"
-    >
+        @load="load">
       <Video
           :src="item.videoUrl"
           :poster="item.coverImage"
           :index="index"
           :activeIndex="activeIndex"
-          autoplay
-      >
-        <div class="mantle">
-          <div class="right" @click.stop="">
-            <div class="right-btn fabulous" @click="fabulous">点赞</div>
-            <div class="right-btn comment" @click="comment">评论</div>
-            <div class="right-btn collection" @click="collection">收藏</div>
-            <div class="right-btn share" @click="share">分享</div>
-          </div>
-        </div>
+          autoplay>
       </Video>
     </Slide>
   </div>

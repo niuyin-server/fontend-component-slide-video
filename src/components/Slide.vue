@@ -17,26 +17,6 @@ const swiperDirection = ref('vertical');
 
 const emits = defineEmits(['refresh', 'toBottom', 'load']);
 
-// const transitionStart = (swiper) => {
-//   //表示没有滑动,不做处理
-//   if (activeIndex.value === swiper.activeIndex) {
-//     // 表示是第一个轮播图
-//     if (swiper.swipeDirection === "prev" && swiper.activeIndex === 0) {
-//       emits("refresh");
-//     } else if (
-//         swiper.swipeDirection === "next" && swiper.activeIndex === props.list.length - 1
-//     ) {
-//       emits("toBottom");
-//     }
-//   } else {
-//     activeIndex.value = swiper.activeIndex;
-//     // 为了预加载视频，提前load 数据
-//     if (swiper.activeIndex === props.list.length - 1) {
-//       emits("load");
-//     }
-//   }
-// }
-
 const transitionStart = (swiper) => {
   // 检查 swiper 是否有效
   if (!swiper || typeof swiper !== 'object') {
