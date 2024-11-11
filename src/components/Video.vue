@@ -8,7 +8,6 @@
         playsinline="true"
         webkit-playsinline="true"
         mediatype="video"
-        :poster="poster"
         @progress="progress"
         @durationchange="durationchange"
         @loadeddata="loadeddata"
@@ -26,19 +25,21 @@
         v-if="index === activeIndex + 1 || index === activeIndex - 1 || showImg"/>
     <img :src="poster" alt="" class="item-box--blur-cover"/>
     <slot></slot>
-    <div class="item-box--play" v-if="paused">
-      <img src="../assets/icon_4.png" alt=""/>
+    <div class="item-box--play flex justify-center items-center" v-if="paused">
+      <img src="@/assets/icon_4.png" alt=""/>
     </div>
     <div class="template-loading" v-if="loading"></div>
     <div class="item-box__progress" @click.stop="">
-      <div class="progress-time" v-if="isPress">
-        <span class="start">{{ startTime }}</span>/<span class="end">{{ endTime }}</span>
+      <div class="progress-time" style="display: none">
+        <span class="start">{{ hoverTime }}</span>/<span class="end">{{ endTime }}</span>
       </div>
       <div class="progress"
            ref="progressRef"
            @click="handleProgress">
         <div class="progress-buffer"
              :style="`width:${percentageBuffer}%`"></div>
+        <div class="progress-read"
+             :style="`width:calc(${percentage}% + 6px)`"></div>
         <div ref="progressSpeed"
              class="progress-speed"
              @touchstart="touchstart"
@@ -58,58 +59,30 @@ import {ref, onMounted} from 'vue';
 import {second} from '@/utils';
 
 const props = defineProps({
-  poster: {
-    type: String,
-    default: '',
-  },
-  src: {
-    type: String,
-    default: '',
-  },
-  index: {
-    type: Number,
-    default: 0,
-  },
-  activeIndex: {
-    type: Number,
-    default: 0,
-  },
-  autoplay: {
-    type: Boolean,
-    default: false, // 浏览器在没有交互的情况下无法播放
-  },
+  poster: {type: String, default: ''},
+  src: {type: String, default: ''},
+  index: {type: Number, default: 0},
+  activeIndex: {type: Number, default: 0},
+  autoplay: {type: Boolean, default: false},
 });
 
-// 是否是暂停状态
-const paused = ref(true)
-// 视频总时间
-const endTime = ref(second(0))
-// 播放的时间
-const startTime = ref(second(0))
-// 是否是按下状态
-const isPress = ref(true)
-// 缓冲进度
-const percentageBuffer = ref(0)
-// 播放进度
-const percentage = ref(0)
-// 保存计算后的播放时间
-const calculationTime = ref(0)
-// 拿到video 实例
-const video = ref(null)
-// 是否展示封面图
-const showImg = ref(true)
-// 是否处于缓冲中
-const loading = ref(false)
-// 进度条
-const progressRef = ref(null)
+const paused = ref(true);
+const endTime = ref(second(0));
+const startTime = ref(second(0));
+const isDragging = ref(false);
+const percentageBuffer = ref(0);
+const percentage = ref(0);
+const video = ref(null);
+const showImg = ref(true);
+const loading = ref(false);
+const progressRef = ref(null);
+const hoverTime = ref('');
 
-// 播放
 function play() {
   video.value.play();
   paused.value = false;
 }
 
-// 暂停
 function pause() {
   if (paused.value) return;
   video.value.pause();
@@ -117,92 +90,66 @@ function pause() {
   loading.value = false;
 }
 
-// 切换播放/暂停
 function togglePlay() {
-  if (paused.value) {
-    video.value.play();
-    paused.value = false;
-  } else {
-    video.value.pause();
-    paused.value = true;
-    loading.value = false;
-  }
+  if (paused.value) play();
+  else pause();
 }
 
-// 获取缓冲进度
 function progress() {
   if (!video.value) return;
   percentageBuffer.value = Math.floor((video.value.buffered.length ? video.value.buffered.end(video.value.buffered.length - 1) / video.value.duration : 0) * 100);
 }
 
-// 时间改变
 function durationchange() {
   endTime.value = second(video.value.duration);
-  console.log('时间改变触发');
 }
 
-// 首帧加载触发,为了获取视频时长
 function loadeddata() {
-  console.log('首帧渲染触发');
   showImg.value = false;
   props.autoplay && play();
 }
 
-// 当播放准备开始时(之前被暂停或者由于数据缺乏被暂缓)被触发
 function playing() {
-  console.log('缓冲结束');
   loading.value = false;
 }
 
-// 缓冲的时候触发
 function waiting() {
-  console.log('处于缓冲中');
   loading.value = true;
 }
 
-// 时间改变触发
 function timeupdate() {
-  // 如果是按下状态不能走进度，表示需要执行拖动
-  if (isPress.value || !video.value) return;
+  if (isDragging.value || !video.value) return;
   startTime.value = second(Math.floor(video.value.currentTime));
   percentage.value = Math.floor((video.value.currentTime / video.value.duration) * 100);
+  hoverTime.value = second(Math.floor(video.value.currentTime));
 }
 
-// 按下开始触发
 function touchstart() {
-  isPress.value = true;
+  isDragging.value = true;
 }
 
-// 松开按钮触发
-function touchend() {
-  video.value.currentTime = calculationTime.value;
-  isPress.value = false;
-}
-
-// 拖动的时候触发
-function touchmove(e) {
-  console.log('移动触发')
+function touchend(e) {
+  isDragging.value = false;
   const width = progressRef.value.offsetWidth;
-  let tx = e.layerX;
-  if (tx < 0 || tx > width) {
-    return;
-  }
-  // 填充speed的宽度
-  tx += 5
-  calculationTime.value = video.value.duration * (tx / width);
-  startTime.value = second(Math.floor(calculationTime.value));
+  const tx = e.layerX;
+  video.value.currentTime = video.value.duration * (tx / width);
+  timeupdate(); // 更新进度条位置
+}
+
+function touchmove(e) {
+  const width = progressRef.value.offsetWidth;
+  const tx = e.layerX;
+  if (tx < 0 || tx > width) return;
   percentage.value = Math.floor((tx / width) * 100);
+  hoverTime.value = second(Math.floor(video.value.duration * (tx / width)));
 }
 
-// 点击进度条触发
 function handleProgress(e) {
-  isPress.value = true;
-  console.log('点击进度' + isPress.value)
+  touchstart();
   touchmove(e);
-  touchend();
+  touchend(e);
 }
 
-// 播放结束时触发
 function ended() {
   play();
 }
@@ -222,13 +169,15 @@ onMounted(() => {
 
   &--video {
     width: 100%;
-    max-height: 100%;
+    height: 100%;
     object-fit: contain;
     cursor: pointer;
     position: absolute;
+    z-index: 0;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    transition: all .2s;
   }
 
   &--blur-cover {
@@ -241,21 +190,22 @@ onMounted(() => {
     top: 50%;
     z-index: -1;
     transform: translate(-50%, -50%);
+    transition: all .2s;
     filter: blur(1rem);
   }
 
   &--play {
     position: absolute;
-    width: calc(100% / 24);
-    height: calc(100% / 24);
+    width: calc(100% / 32);
+    height: calc(100% / 32);
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    backdrop-filter: blur(10px);
 
     img {
       width: 100%;
     }
+
   }
 
   .template-loading {
@@ -275,7 +225,7 @@ onMounted(() => {
 
   &__progress {
     position: absolute;
-    bottom: 0;
+    bottom: -1px;
     left: 0;
     width: 100%;
     height: 64px;
@@ -287,16 +237,29 @@ onMounted(() => {
 
     &:hover {
       .progress {
-        height: 8px !important;
+        height: 10px !important;
+
+        &-time {
+          display: block !important;
+        }
 
         &-buffer {
-          height: 8px;
+          height: 10px;
+        }
+
+        &-read {
+          height: 10px;
         }
 
         &-speed--btn {
-          width: 10px;
-          height: 10px;
+          width: 12px;
+          height: 12px;
         }
+      }
+
+      &::before {
+        transition: all .2s;
+        height: 10px;
       }
 
     }
@@ -310,7 +273,7 @@ onMounted(() => {
       bottom: 32px;
       transform: translateX(-50%);
       color: rgba(255, 255, 255, .8);
-      transition: height 1s;
+      transition: height .2s;
 
       .start {
         font-size: 12px;
@@ -333,19 +296,28 @@ onMounted(() => {
     .progress {
       position: absolute;
       width: 100%;
-      height: 6px;
+      height: 5px;
       background: rgba(255, 255, 255, 0.1);
       bottom: 0;
       left: 0;
-      transition: height .3s;
+      transition: all .2s;
 
       &-buffer {
         position: absolute;
         left: 0;
         top: 0;
-        height: 6px;
-        background: rgba(255, 255, 255, 0.5);
-        transition: all 1s;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.8);
+        transition: all .5s;
+      }
+
+      &-read {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 5px;
+        background: rgb(255, 255, 255);
+        transition: all .1s;
       }
 
       &-speed {
@@ -366,7 +338,7 @@ onMounted(() => {
           margin-top: -2px;
           background: rgba(255, 255, 255, .6);
           border-radius: 50%;
-          transition: all .3s;
+          transition: all .2s;
         }
       }
     }
@@ -376,8 +348,8 @@ onMounted(() => {
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 6px;
-      background: #000;
+      height: 5px;
+      background: rgba(0, 0, 0, 0.6);
       content: '';
     }
   }
