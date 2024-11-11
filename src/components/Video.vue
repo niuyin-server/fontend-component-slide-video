@@ -1,5 +1,5 @@
 <template>
-  <div class="item-box" @click="pause">
+  <div class="item-box" @click="togglePlay">
     <video
         v-if="index === activeIndex"
         id="td-video"
@@ -26,7 +26,7 @@
         v-if="index === activeIndex + 1 || index === activeIndex - 1 || showImg"/>
     <img :src="poster" alt="" class="item-box--blur-cover"/>
     <slot></slot>
-    <div class="item-box--play" v-if="paused" @click.stop="play">
+    <div class="item-box--play" v-if="paused">
       <img src="../assets/icon_4.png" alt=""/>
     </div>
     <div class="template-loading" v-if="loading"></div>
@@ -34,18 +34,18 @@
       <div class="progress-time" v-if="isPress">
         <span class="start">{{ startTime }}</span>/<span class="end">{{ endTime }}</span>
       </div>
-      <div class="progress" @click="handleProgress">
-        <div
-            class="progress-buffer"
-            :style="`width:${percentageBuffer}%`"></div>
-        <div
-            ref="progressSpeed"
-            class="progress-speed"
-            @touchstart="touchstart"
-            @touchend="touchend"
-            @touchmove="touchmove"
-            :style="`left:${percentage}%`"
-            @click.stop="">
+      <div class="progress"
+           ref="progressRef"
+           @click="handleProgress">
+        <div class="progress-buffer"
+             :style="`width:${percentageBuffer}%`"></div>
+        <div ref="progressSpeed"
+             class="progress-speed"
+             @touchstart="touchstart"
+             @touchend="touchend"
+             @touchmove="touchmove"
+             :style="`left:${percentage}%`"
+             @click.stop="">
           <div class="progress-speed--btn"></div>
         </div>
       </div>
@@ -100,6 +100,8 @@ const video = ref(null);
 const showImg = ref(true);
 // 是否处于缓冲中
 const loading = ref(false);
+// 进度条
+const progressRef = ref(null)
 
 // 播放
 function play() {
@@ -113,6 +115,18 @@ function pause() {
   video.value.pause();
   paused.value = true;
   loading.value = false;
+}
+
+// 切换播放/暂停
+function togglePlay() {
+  if (paused.value) {
+    video.value.play();
+    paused.value = false;
+  } else {
+    video.value.pause();
+    paused.value = true;
+    loading.value = false;
+  }
 }
 
 // 获取缓冲进度
@@ -167,11 +181,13 @@ function touchend() {
 
 // 拖动的时候触发
 function touchmove(e) {
-  const width = window.screen.width;
-  const tx = e.clientX || e.changedTouches[0].clientX;
+  const width = progressRef.value.offsetWidth;
+  let tx = e.layerX;
   if (tx < 0 || tx > width) {
     return;
   }
+  // 填充speed的宽度
+  tx += 5
   calculationTime.value = video.value.duration * (tx / width);
   startTime.value = second(Math.floor(calculationTime.value));
   percentage.value = Math.floor((tx / width) * 100);
@@ -227,12 +243,12 @@ onMounted(() => {
 
   &--play {
     position: absolute;
-    width: 53px;
-    height: 53px;
+    width: calc(100% / 24);
+    height: calc(100% / 24);
     left: 50%;
     top: 50%;
-    margin-left: -26.25px;
-    margin-top: -26.25px;
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(10px);
 
     img {
       width: 100%;
@@ -259,36 +275,52 @@ onMounted(() => {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 115px;
+    height: 64px;
     background: linear-gradient(
             180deg,
             rgba(0, 0, 0, 0) 0%,
-            rgba(0, 0, 0, 0.4) 100%
+            rgba(0, 0, 0, 0.2) 100%
     );
 
+    &:hover {
+      .progress {
+        height: 8px;
+
+        &-buffer {
+          height: 8px;
+        }
+
+        &-speed--btn {
+          width: 10px;
+          height: 10px;
+        }
+      }
+
+    }
+
     .progress-time {
-      padding: 5px 20px;
-      background-color: rgba(0, 0, 0, 0.7);
-      border-radius: 18.5px;
+      padding: .25rem 1rem;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 1rem;
       position: absolute;
       left: 50%;
-      bottom: 67px;
+      bottom: 32px;
       transform: translateX(-50%);
       color: rgba(255, 255, 255, 1);
 
       .start {
-        font-size: 13px;
-        font-weight: 700;
-        line-height: 18.5px;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
         display: inline-block;
         padding-right: 3px;
       }
 
       .end {
-        font-size: 13px;
-        font-weight: 700;
-        line-height: 18.5px;
-        color: rgba(255, 255, 255, 0.6);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.5);
         display: inline-block;
         padding-left: 3px;
       }
@@ -297,26 +329,27 @@ onMounted(() => {
     .progress {
       position: absolute;
       width: 100%;
-      height: 2px;
-      background: rgba(255, 255, 255, 0.5);
-      bottom: 3px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      bottom: 0;
       left: 0;
+      transition: height .3s;
 
       &-buffer {
         position: absolute;
         left: 0;
         top: 0;
-        height: 2px;
+        height: 6px;
         background: rgba(255, 255, 255, 0.5);
-        transition: width 1s;
+        transition: all 1s;
       }
 
       &-speed {
         position: absolute;
         left: 0;
         top: 0;
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
         margin-left: -15px;
         margin-top: -15px;
 
@@ -324,12 +357,12 @@ onMounted(() => {
           position: absolute;
           left: 50%;
           top: 50%;
-          width: 6px;
-          height: 6px;
-          margin-left: -3px;
+          width: 8px;
+          height: 8px;
           margin-top: -2px;
-          background: rgba(255, 255, 255, 1);
+          background: rgba(255, 255, 255, .6);
           border-radius: 50%;
+          transition: all .3s;
         }
       }
     }
@@ -339,7 +372,7 @@ onMounted(() => {
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 3px;
+      height: 6px;
       background: #000;
       content: '';
     }
