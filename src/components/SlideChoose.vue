@@ -33,7 +33,9 @@ const props = defineProps({
          :activeIndex="activeIndex"
          autoplay>
   </Video>
-  <SlideImage v-else-if="publishType==='1'"/>
+  <SlideImage v-else-if="publishType==='1'"
+              :image-list="item.imageList"/>
+  <div v-else> fail </div>
 </template>
 
 <style scoped>

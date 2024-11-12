@@ -1,10 +1,10 @@
 <template>
-  <div class="item-box" @click="togglePlay">
+  <div class="item-box relative" @click="togglePlay">
     <video
         v-if="index === activeIndex"
         id="td-video"
         ref="video"
-        class="item-box--video flex justify-center items-center"
+        class="item-box--video "
         playsinline="true"
         webkit-playsinline="true"
         mediatype="video"
@@ -159,12 +159,11 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .item-box {
   height: 100%;
   width: 100%;
   position: relative;
-  background-color: #000000;
   z-index: 1;
   overflow: hidden;
 

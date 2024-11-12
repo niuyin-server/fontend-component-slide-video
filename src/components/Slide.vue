@@ -59,11 +59,11 @@ const transitionStart = (swiper) => {
 
 <template>
   <swiper
-      class="h-full relative"
+      class="h-full relative bg-black"
       :space-between="0"
       :direction="swiperDirection"
       :modules="modules"
-      :speed="400"
+      :speed="300"
       :mousewheel="true"
       @transitionStart="transitionStart">
     <swiper-slide v-for="(item, index) in list" :key="index" class="h-full">
