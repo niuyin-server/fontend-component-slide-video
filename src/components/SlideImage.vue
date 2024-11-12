@@ -112,7 +112,6 @@ onMounted(() => {
 
 .image-swiper-button-prev {
   left: 2rem;
-  //transform: translateX(-1rem);
 }
 
 .image-swiper-button-next {

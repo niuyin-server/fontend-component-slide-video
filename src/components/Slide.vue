@@ -55,6 +55,10 @@ const transitionStart = (swiper) => {
   }
 }
 
+const onSlideChange = () => {
+  console.log('slide change');
+}
+
 </script>
 
 <template>
@@ -65,7 +69,8 @@ const transitionStart = (swiper) => {
       :modules="modules"
       :speed="400"
       :mousewheel="true"
-      @transitionStart="transitionStart">
+      @transitionStart="transitionStart"
+      @slideChange="onSlideChange">
     <swiper-slide v-for="(item, index) in list" :key="index" class="h-full">
       <slot
           :item="item"

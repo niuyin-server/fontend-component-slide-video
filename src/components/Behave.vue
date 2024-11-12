@@ -1,4 +1,5 @@
 <script setup>
+import {Heart, MessageCircleMore, Star, Share2} from "lucide-vue-next";
 
 function like() {
   console.log("这是点赞");
@@ -20,23 +21,40 @@ function share() {
 
 <template>
   <div class="behave-container">
-    <div class="mantle">
-      <div class="right" @click.stop="">
-        <div class="right-btn like" @click="like">点赞</div>
-        <div class="right-btn comment" @click="comment">评论</div>
-        <div class="right-btn collect" @click="collect">收藏</div>
-        <div class="right-btn share" @click="share">分享</div>
-      </div>
+    <div class="behave-btn like" @click="like">
+      <Heart class="m-2"/>
+      <span class="text-sm ">点赞</span>
+    </div>
+    <div class="behave-btn comment" @click="comment">
+      <MessageCircleMore class="m-2"/>
+      <span class="text-sm mt-1">评论</span>
+    </div>
+    <div class="behave-btn collect" @click="collect">
+      <Star class="m-2"/>
+      <span class="text-sm mt-1">收藏</span>
+    </div>
+    <div class="behave-btn share" @click="share">
+      <Share2 class="m-2"/>
+      <span class="text-sm mt-1">分享</span>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .behave-container {
   z-index: 1;
   position: absolute;
-  right: 0;
-  bottom: 0;
-  color: blue;
+  right: 2rem;
+  bottom: 2rem;
+  color: white;
+
+  & .behave-btn {
+    margin: .5rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
 }
 </style>
