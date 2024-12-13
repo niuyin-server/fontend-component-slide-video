@@ -12,7 +12,6 @@ import "./tailwind.css";
 import router from '@/router/index'
 
 const app = createApp(App)
-
 app.use(ElementPlus, {locale: zhLocale})
 app.use(router)
 app.mount('#app')

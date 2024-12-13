@@ -1,6 +1,7 @@
 <script setup>
 import Video from '@/components/Video.vue';
 import SlideImage from "@/components/SlideImage.vue";
+import SlideVideo from "@/components/SlideVideo.vue";
 
 const props = defineProps({
   item: {
@@ -26,16 +27,21 @@ const props = defineProps({
 </script>
 
 <template>
-  <Video v-if="publishType==='0'"
-         :src="item.videoUrl"
-         :poster="item.coverImage"
-         :index="index"
-         :activeIndex="activeIndex"
-         autoplay>
-  </Video>
+    <Video v-if="publishType==='0'"
+           :src="item.videoUrl"
+           :poster="item.coverImage"
+           :index="index"
+           :activeIndex="activeIndex"
+           autoplay>
+    </Video>
+<!--  <slide-video v-if="publishType==='0'"-->
+<!--               :video="item"-->
+<!--               :index="index"-->
+<!--               :activeIndex="activeIndex"-->
+<!--               autoplay/>-->
   <SlideImage v-else-if="publishType==='1'"
               :image-list="item.imageList"/>
-  <div v-else> fail </div>
+  <div v-else> fail</div>
 </template>
 
 <style scoped>

@@ -4,7 +4,7 @@
         v-if="index === activeIndex"
         id="td-video"
         ref="video"
-        class="item-box--video "
+        class="item-box--video"
         playsinline="true"
         webkit-playsinline="true"
         mediatype="video"
@@ -55,7 +55,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, watch} from 'vue';
 import {second} from '@/utils';
 
 const props = defineProps({
@@ -78,7 +78,11 @@ const loading = ref(false);
 const progressRef = ref(null);
 const hoverTime = ref('');
 
+const touchLayerX = ref(0)
+
+
 function play() {
+  console.log("index" + props.index + " activeIndex" + props.activeIndex)
   video.value.play();
   paused.value = false;
 }
@@ -137,10 +141,12 @@ function touchend(e) {
 }
 
 function touchmove(e) {
+  console.log("touchmove")
   const width = progressRef.value.offsetWidth;
   const tx = e.layerX;
   if (tx < 0 || tx > width) return;
   percentage.value = Math.floor((tx / width) * 100);
+  touchLayerX.value = Math.floor((tx / width) * 100);
   hoverTime.value = second(Math.floor(video.value.duration * (tx / width)));
 }
 
@@ -157,6 +163,10 @@ function ended() {
 onMounted(() => {
   // 初始化操作
 });
+
+watch(touchLayerX, (New, Old) => {
+  console.log(`新值:${New} ——— 老值:${Old}`)
+})
 </script>
 
 <style scoped lang="scss">
