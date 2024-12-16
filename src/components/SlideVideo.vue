@@ -41,11 +41,11 @@ onMounted(() => {
     <!--                mediatype="video" >-->
     <!--              <source :src="video.videoUrl" type="video/mp4"/>-->
     <!--            </video>-->
-<!--    <vue-plyr v-if="index === activeIndex" :options="options" class="slide-video-box&#45;&#45;video">-->
-<!--      <video controls crossorigin playsinline data-poster="poster.jpg">-->
-<!--        <source size="1080" :src="video.videoUrl" type="video/mp4"/>-->
-<!--      </video>-->
-<!--    </vue-plyr>-->
+    <!--    <vue-plyr v-if="index === activeIndex" :options="options" class="slide-video-box&#45;&#45;video">-->
+    <!--      <video controls crossorigin playsinline data-poster="poster.jpg">-->
+    <!--        <source size="1080" :src="video.videoUrl" type="video/mp4"/>-->
+    <!--      </video>-->
+    <!--    </vue-plyr>-->
     <div v-if="index === activeIndex" class="slide-video-box--video">
       <video-player :video="video" :autoplay="false"/>
     </div>
@@ -125,5 +125,22 @@ onMounted(() => {
 :deep(.plyr__poster) {
   background-color: transparent !important;
 }
+
+/*控制器样式*/
+:deep(.plyr--video .plyr__controls>.plyr__control) {
+  border-radius: 50%;
+}
+
+//:deep(.plyr--video .plyr__controls>.plyr__control:hover) {
+//  background: rgba(62, 128, 248, 0.3);
+//}
+
+:deep(.plyr--video .plyr__controls .plyr__controls__item>.plyr__control) {
+  border-radius: 50%;
+}
+
+//:deep(.plyr--video .plyr__controls .plyr__controls__item>.plyr__control:hover) {
+//  background: rgba(62, 128, 248, 0.3);
+//}
 
 </style>
