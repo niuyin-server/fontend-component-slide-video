@@ -23,38 +23,9 @@ onMounted(() => {
 
 <template>
   <div class="slide-video-box relative">
-    <!--    <div v-if="index === activeIndex" class="slide-video-box&#45;&#45;video">-->
-    <!--      <div class="relative w-full h-full">-->
-    <!--        <div class="absolute w-full h-full" style="background-color: black">-->
-    <!--          <img v-if="video.coverImage" class="video-cover w-full h-full" :src="video.coverImage" alt=""/>-->
-    <!--        </div>-->
-    <!--        <video-player :video="video" :autoplay="false"/>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!--            <video-->
-    <!--                v-if="index === activeIndex"-->
-    <!--                id="td-video"-->
-    <!--                ref="video"-->
-    <!--                class="slide-video-box&#45;&#45;video"-->
-    <!--                autoplay-->
-    <!--                controls-->
-    <!--                mediatype="video" >-->
-    <!--              <source :src="video.videoUrl" type="video/mp4"/>-->
-    <!--            </video>-->
-    <!--    <vue-plyr v-if="index === activeIndex" :options="options" class="slide-video-box&#45;&#45;video">-->
-    <!--      <video controls crossorigin playsinline data-poster="poster.jpg">-->
-    <!--        <source size="1080" :src="video.videoUrl" type="video/mp4"/>-->
-    <!--      </video>-->
-    <!--    </vue-plyr>-->
     <div v-if="index === activeIndex" class="slide-video-box--video">
       <video-player :video="video" :autoplay="false"/>
     </div>
-    <!--    <img-->
-    <!--        :src="video.coverImage"-->
-    <!--        alt=""-->
-    <!--        class="slide-video-box&#45;&#45;video"-->
-    <!--        v-if="index === activeIndex + 1 || index === activeIndex - 1"/>-->
-
   </div>
 </template>
 
