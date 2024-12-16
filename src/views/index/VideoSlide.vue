@@ -10,7 +10,7 @@ const videoList = ref([])
 const loadVideo = async () => {
   const res = await recommendVideoFeed()
   if (res.data.code !== 200) return
-  console.log(res.data)
+  // console.log(res.data)
   videoList.value = [...videoList.value, ...res.data.data]
   console.log(videoList.value)
 }
@@ -45,7 +45,9 @@ onMounted(() => {
                    :index="index"
                    :activeIndex="activeIndex"
                    :publish-type="item.publishType"/>
-      <Behave/>
+      <Behave :item="item"
+              :index="index"
+              :activeIndex="activeIndex"/>
     </Slide>
   </div>
 </template>

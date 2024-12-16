@@ -27,18 +27,18 @@ const props = defineProps({
 </script>
 
 <template>
-    <Video v-if="publishType==='0'"
-           :src="item.videoUrl"
-           :poster="item.coverImage"
-           :index="index"
-           :activeIndex="activeIndex"
-           autoplay>
-    </Video>
-<!--  <slide-video v-if="publishType==='0'"-->
-<!--               :video="item"-->
-<!--               :index="index"-->
-<!--               :activeIndex="activeIndex"-->
-<!--               autoplay/>-->
+<!--    <Video v-if="publishType==='0'"-->
+<!--           :src="item.videoUrl"-->
+<!--           :poster="item.coverImage"-->
+<!--           :index="index"-->
+<!--           :activeIndex="activeIndex"-->
+<!--           autoplay>-->
+<!--    </Video>-->
+  <slide-video v-if="publishType==='0'"
+               :video="item"
+               :index="index"
+               :activeIndex="activeIndex"
+               autoplay/>
   <SlideImage v-else-if="publishType==='1'"
               :image-list="item.imageList"/>
   <div v-else> fail</div>

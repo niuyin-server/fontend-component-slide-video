@@ -18,7 +18,7 @@ const swiperDirection = ref('horizontal')
 const modules = ref([Navigation, Pagination])
 
 onMounted(() => {
-  console.log(props.imageList)
+  // console.log(props.imageList)
 })
 
 </script>

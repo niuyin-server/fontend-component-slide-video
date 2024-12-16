@@ -1,5 +1,5 @@
 <script setup>
-import {ref, reactive} from "vue";
+import {ref, reactive, onMounted} from "vue";
 import videoPlay from "vue3-video-play/lib/index";
 import Video from "@/components/Video.vue";
 import VideoPlayer from "@/components/VideoPlayer.vue";
@@ -15,33 +15,51 @@ const props = defineProps({
   activeIndex: {type: Number, default: 0},
   autoplay: {type: Boolean, default: false},
 })
+
+onMounted(() => {
+  console.log("index" + props.index + " activeIndex" + props.activeIndex)
+})
 </script>
 
 <template>
-  <div class="item-box relative">
-<!--    <div class="item-box&#45;&#45;video"  >-->
-<!--        <video-player :video="video" v-if="index === activeIndex" :autoplay="false"/>-->
-<!--    </div>-->
-        <video
-            v-if="index === activeIndex"
-            id="td-video"
-            ref="video"
-            class="item-box--video"
-            autoplay
-            mediatype="video" >
-          <source :src="video.videoUrl" type="video/mp4"/>
-        </video>
-    <img
-        :src="video.coverImage"
-        alt=""
-        class="item-box--video"
-        v-if="index === activeIndex + 1 || index === activeIndex - 1"/>
-    <img :src="video.coverImage" alt="" class="item-box--blur-cover"/>
+  <div class="slide-video-box relative">
+    <!--    <div v-if="index === activeIndex" class="slide-video-box&#45;&#45;video">-->
+    <!--      <div class="relative w-full h-full">-->
+    <!--        <div class="absolute w-full h-full" style="background-color: black">-->
+    <!--          <img v-if="video.coverImage" class="video-cover w-full h-full" :src="video.coverImage" alt=""/>-->
+    <!--        </div>-->
+    <!--        <video-player :video="video" :autoplay="false"/>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--            <video-->
+    <!--                v-if="index === activeIndex"-->
+    <!--                id="td-video"-->
+    <!--                ref="video"-->
+    <!--                class="slide-video-box&#45;&#45;video"-->
+    <!--                autoplay-->
+    <!--                controls-->
+    <!--                mediatype="video" >-->
+    <!--              <source :src="video.videoUrl" type="video/mp4"/>-->
+    <!--            </video>-->
+<!--    <vue-plyr v-if="index === activeIndex" :options="options" class="slide-video-box&#45;&#45;video">-->
+<!--      <video controls crossorigin playsinline data-poster="poster.jpg">-->
+<!--        <source size="1080" :src="video.videoUrl" type="video/mp4"/>-->
+<!--      </video>-->
+<!--    </vue-plyr>-->
+    <div v-if="index === activeIndex" class="slide-video-box--video">
+      <video-player :video="video" :autoplay="false"/>
+    </div>
+    <!--    <img-->
+    <!--        :src="video.coverImage"-->
+    <!--        alt=""-->
+    <!--        class="slide-video-box&#45;&#45;video"-->
+    <!--        v-if="index === activeIndex + 1 || index === activeIndex - 1"/>-->
+
   </div>
 </template>
 
 <style scoped lang="scss">
-.item-box {
+.slide-video-box {
   height: 100%;
   width: 100%;
   position: relative;
@@ -89,4 +107,23 @@ const props = defineProps({
 
   }
 }
+
+.video-cover {
+  filter: blur(60px);
+  opacity: 0.8;
+  user-select: none;
+}
+
+:deep(.plyr--video) {
+  background: transparent !important;
+}
+
+:deep(.plyr--video .plyr__video-wrapper) {
+  background: transparent !important;
+}
+
+:deep(.plyr__poster) {
+  background-color: transparent !important;
+}
+
 </style>

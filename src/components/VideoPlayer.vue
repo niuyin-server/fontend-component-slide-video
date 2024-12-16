@@ -1,6 +1,7 @@
 <script setup>
 import {ref, reactive} from "vue";
 import videoPlay from "vue3-video-play/lib/index";
+import Video from "@/components/Video.vue";
 
 const props = defineProps({
   video: {
@@ -12,39 +13,76 @@ const props = defineProps({
   autoplay: {type: Boolean, default: false},
 })
 
+// const options = reactive({
+//   width: "100%",
+//   height: "100%",
+//   color: "#409eff",
+//   title: props.video.title,
+//   src: props.video.videoUrl,
+//   poster: props.video.coverImage,
+//   muted: false,
+//   webFullScreen: false,
+//   speedRate: ["0.75", "1.0", "1.25", "1.5", "2.0"],
+//   autoPlay: props.autoplay,
+//   loop: false,
+//   mirror: false,
+//   ligthOff: false,
+//   volume: 0.5,
+//   control: true,
+//   controlBtns: [
+//     "audioTrack",
+//     "quality",
+//     "speedRate",
+//     "volume",
+//     "setting",
+//     "pip",
+//     "pageFullScreen",
+//     "fullScreen",
+//   ],
+// });
 const options = reactive({
-  width: "100%",
-  height: "100%",
-  color: "#409eff",
-  title: props.video.title,
-  src: props.video.videoUrl,
-  poster: props.video.coverImage,
-  muted: false,
-  webFullScreen: false,
-  speedRate: ["0.75", "1.0", "1.25", "1.5", "2.0"],
-  autoPlay: props.autoplay,
-  loop: false,
-  mirror: false,
-  ligthOff: false,
-  volume: 0.5,
-  control: true,
-  controlBtns: [
-    "audioTrack",
-    "quality",
-    "speedRate",
-    "volume",
-    "setting",
-    "pip",
-    "pageFullScreen",
-    "fullScreen",
-  ],
-});
+  i18n: {
+    speed: '速度',
+    normal: '正常'
+  }
+})
 </script>
 
 <template>
-  <videoPlay v-bind="options"/>
+  <!--  https://github.com/sampotts/plyr -->
+  <!--  <videoPlay v-bind="options"/>-->
+  <vue-plyr :options="options">
+    <video controls crossorigin playsinline :data-poster="video.coverImage">
+      <source size="1080" :src="video.videoUrl" type="video/mp4"/>
+    </video>
+  </vue-plyr>
+  <img :src="video.coverImage" alt="" class="slide-video-box--blur-cover"/>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.slide-video-box--blur-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  transform: translate(-50%, -50%);
+  transition: all .2s;
+  filter: blur(2rem);
+}
 
+:deep(.plyr--video) {
+  background: transparent !important;
+}
+
+:deep(.plyr--video .plyr__video-wrapper) {
+  background: transparent !important;
+}
+
+:deep(.plyr__poster) {
+  background-color: transparent !important;
+}
 </style>

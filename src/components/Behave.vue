@@ -1,6 +1,23 @@
 <script setup>
 import {Heart, MessageCircleMore, Star, Share2} from "lucide-vue-next";
 
+const props = defineProps({
+  item: {
+    type: Object,
+    default: () => {
+      return {}
+    }
+  },
+  index: {
+    type: Number,
+    default: 0
+  },
+  activeIndex: {
+    type: Number,
+    default: 0
+  },
+})
+
 function like() {
   console.log("这是点赞");
 }
@@ -23,7 +40,7 @@ function share() {
   <div class="behave-container">
     <div class="behave-btn like" @click="like">
       <Heart class="m-2"/>
-      <span class="text-sm ">点赞</span>
+      <span class="text-sm ">点赞{{index+"---"+activeIndex}}</span>
     </div>
     <div class="behave-btn comment" @click="comment">
       <MessageCircleMore class="m-2"/>

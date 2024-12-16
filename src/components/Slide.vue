@@ -53,7 +53,7 @@ const onSlideChange = () => {
       :space-between="0"
       :direction="swiperDirection"
       :modules="modules"
-      :speed="400"
+      :speed="300"
       :mousewheel="true"
       @transitionStart="transitionStart"
       @slideChange="onSlideChange">
