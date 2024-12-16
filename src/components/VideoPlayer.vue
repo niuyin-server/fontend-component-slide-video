@@ -44,7 +44,15 @@ const options = reactive({
   i18n: {
     speed: '速度',
     normal: '正常',
-    quality: '清晰度'
+    quality: '清晰度',
+    qualityBadge: {
+      2160: '4K',
+      1440: 'HD',
+      1080: 'HD',
+      720: 'HD',
+      576: 'SD',
+      480: 'SD',
+    },
   },
   controls: [
     'play-large',

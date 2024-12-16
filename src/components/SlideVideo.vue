@@ -143,4 +143,9 @@ onMounted(() => {
 //  background: rgba(62, 128, 248, 0.3);
 //}
 
+:deep(.plyr__control--overlaid) {
+  background: rgba(62, 99, 248, 0.4);
+  backdrop-filter: blur(1rem);
+}
+
 </style>
