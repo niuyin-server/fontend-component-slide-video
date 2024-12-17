@@ -27,21 +27,21 @@ const options = reactive({
     },
   },
   controls: [
-    'play-large',
     // 'restart',
     // 'rewind',
-    'play',
     // 'fast-forward',
+    // 'download',
+    'play',
     'progress',
     'current-time',
     'duration',
+    'play-large',
     'mute',
     'volume',
     'captions',
     'settings',
     'pip',
     'airplay',
-    // 'download',
     'fullscreen',
   ],
   settings: ['captions', 'quality', 'speed', 'loop'],
@@ -53,6 +53,7 @@ const options = reactive({
     default: 1080,
     options: [4320, 2880, 2160, 1440, 1080, 720]
   },
+  seekTime: 5,
 })
 </script>
 
@@ -83,15 +84,4 @@ const options = reactive({
   filter: blur(2rem);
 }
 
-:deep(.plyr--video) {
-  background: transparent !important;
-}
-
-:deep(.plyr--video .plyr__video-wrapper) {
-  background: transparent !important;
-}
-
-:deep(.plyr__poster) {
-  background-color: transparent !important;
-}
 </style>

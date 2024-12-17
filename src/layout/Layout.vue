@@ -19,5 +19,7 @@ import Footer from './Footer.vue'
 </template>
 
 <style scoped>
-
+.el-main {
+  --el-main-padding: 1rem;
+}
 </style>

@@ -34,7 +34,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="main-container h-full">
+  <div class="main-container h-full flex">
     <Slide
         :list="videoList"
         v-slot="{ item, index, activeIndex }"
