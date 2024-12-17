@@ -1,9 +1,8 @@
 <script setup>
 import {ref, onMounted} from "vue";
-import {Swiper, SwiperSlide, useSwiper} from 'swiper/vue';
+import {Swiper, SwiperSlide} from 'swiper/vue';
 import 'swiper/css';
 import {Mousewheel, Navigation} from 'swiper/modules';
-// import 'swiper/css/navigation'
 import {ChevronUp, ChevronDown} from "lucide-vue-next";
 
 const props = defineProps({
@@ -14,16 +13,14 @@ const props = defineProps({
 })
 
 const navigation = ref({
-  prevEl: ".swiper-slidesnav-prev",
-  nextEl: ".swiper-slidesnav-next",
+  prevEl: ".swiper-slidenav-prev",
+  nextEl: ".swiper-slidenav-next",
 });
 
-const prevEl = (item, index) => {
-  console.log('上一张' + index + item)
+const prevEl = () => {
 };
 
 const nextEl = () => {
-  console.log('下一张')
 };
 
 const modules = ref([Mousewheel, Navigation])
@@ -89,39 +86,35 @@ onMounted(() => {
           v-if="activeIndex >= index - 1 && activeIndex <= index + 1"></slot>
     </swiper-slide><!-- 视频右侧控制按钮-->
   </swiper>
-  <div class="swiper-slidesnav flex-center">
-    <div class="swiper-slidesnav-tab">
-      <div class="swiper-slidesnav-prev" @click.stop="prevEl">
-        <ChevronUp class="swiper-slidesnav-icon" :size="28" :stroke-width="2"/>
+  <div class="swiper-slidenav flex justify-center flex-row flex-wrap items-center">
+    <div class="swiper-slidenav-tab">
+      <div class="swiper-slidenav-prev" @click.stop="prevEl">
+        <ChevronUp class="swiper-slidenav-icon" :size="28" :stroke-width="2"/>
       </div>
-      <div class="swiper-slidesnav-next" @click.stop="nextEl">
-        <ChevronDown class="swiper-slidesnav-icon" :size="28" :stroke-width="2"/>
+      <div class="swiper-slidenav-next" @click.stop="nextEl">
+        <ChevronDown class="swiper-slidenav-icon" :size="28" :stroke-width="2"/>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.swiper-slidesnav {
+.swiper-slidenav {
   margin: auto 0 auto 1rem;
-  display: flex;
-  justify-content: center;
-  flex-flow: row wrap;
-  align-items: center;
 
-  .swiper-slidesnav-tab {
-    background-color: #e1e1e1;
+  .swiper-slidenav-tab {
+    background-color: rgba(225, 225, 225, 0.38);
     border-radius: 1.5rem;
 
     &:hover {
       backdrop-filter: blur(.5rem);
     }
 
-    & .swiper-slidesnav-icon {
+    & .swiper-slidenav-icon {
       cursor: pointer;
     }
 
-    .swiper-slidesnav-prev {
+    .swiper-slidenav-prev {
       padding: .4rem;
       transition: all 0.5s ease;
 
@@ -131,7 +124,7 @@ onMounted(() => {
 
     }
 
-    .swiper-slidesnav-next {
+    .swiper-slidenav-next {
       padding: .4rem;
       transition: all 0.5s ease;
 
