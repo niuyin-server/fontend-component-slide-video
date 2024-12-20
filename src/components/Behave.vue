@@ -40,7 +40,7 @@ function share() {
   <div class="behave-container">
     <div class="behave-btn like" @click="like">
       <Heart class="m-2"/>
-      <span class="text-sm ">点赞{{index+"---"+activeIndex}}</span>
+      <span class="text-sm ">点赞 </span>
     </div>
     <div class="behave-btn comment" @click="comment">
       <MessageCircleMore class="m-2"/>
@@ -62,7 +62,7 @@ function share() {
   z-index: 1;
   position: absolute;
   right: 2rem;
-  bottom: 2rem;
+  bottom: 3rem;
   color: white;
 
   & .behave-btn {

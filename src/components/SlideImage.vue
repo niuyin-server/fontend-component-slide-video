@@ -82,13 +82,14 @@ onMounted(() => {
 
 :deep(.swiper-pagination-bullet) {
   flex: 1;
-  height: 5px;
+  height: 4px;
   text-align: center;
-  border-radius: 2px;
+  border-radius: 1.5px;
 }
 
 :deep(.swiper-pagination-bullet-active) {
-  background-color: #f4f4f4;
+  background-color: rgba(244, 244, 244, 0.8);
+  backdrop-filter: blur(1rem);
 }
 
 /*自定义 swiper 左右切换按钮*/

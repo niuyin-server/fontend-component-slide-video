@@ -66,6 +66,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- swiper -->
   <swiper
       class="w-full h-full relative bg-black flex"
       style="border-radius: 1rem;"
@@ -84,8 +85,9 @@ onMounted(() => {
           :index="index"
           :activeIndex="activeIndex"
           v-if="activeIndex >= index - 1 && activeIndex <= index + 1"></slot>
-    </swiper-slide><!-- 视频右侧控制按钮-->
+    </swiper-slide>
   </swiper>
+  <!-- 视频右侧控制按钮-->
   <div class="swiper-slidenav flex justify-center flex-row flex-wrap items-center">
     <div class="swiper-slidenav-tab">
       <div class="swiper-slidenav-prev" @click.stop="prevEl">
