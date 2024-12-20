@@ -1,8 +1,4 @@
-# Vue 3 + Vite
+# 芝士学爆web端组件-视频swiper
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
-
-
-npm install lucide-vue-next
+效果图
+![index-preview.jpg](docs/images/index-preview.jpg)
